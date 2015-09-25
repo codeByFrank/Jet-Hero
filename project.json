@@ -13,9 +13,8 @@
     "jsList" : [
         "src/resource.js",
         "src/app.js",
-		"src/playscene.js",
-		"src/background_layer.js",
 		"src/status_layer.js",
-		"src/animation_layer.js"
+		"src/animation_layer.js",
+        "src/arrows.js"
     ]
 }
