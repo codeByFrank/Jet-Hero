@@ -1,5 +1,8 @@
 var res = {
 	Car_temp_png : "res/CarTemp.png",
+	Car_temp2_png : "res/CarTemp2.png",
+	Car_temp3_png : "res/CarTemp3.png",
+	Car_temp4_png : "res/CarTemp4.png",
 	Menu_BG_png : "res/menu_bg.png",
 	Game_BG_png : "res/menu_bg-v1.png",
 	Game_BG1_png : "res/menu_bg-v1.png",

@@ -14,7 +14,7 @@
         "src/resource.js",
         "src/app.js",
 		"src/status_layer.js",
-		"src/animation_layer.js",
-        "src/arrows.js"
+		"src/enemies_layer.js",
+		"src/animation_layer.js"
     ]
 }

@@ -1,21 +1,48 @@
+var MAX_MOVES = 2;
+var ONE_MOVE = 70;
+
 var AnimationLayer = cc.Layer.extend({
+    goleft: MAX_MOVES,
+    goright: MAX_MOVES,
     ctor:function () {
         this._super();
-        this.init();
+        this.init();     
     },
-    init:function () {
+    init:function() {
         this._super();
-		var size = cc.director.getWinSize();
+		var size = this.size = cc.director.getWinSize();
 
-		
-		var car = new cc.Sprite(res.Car_temp_png);
+		var enemies = new EnemiesLayer();
+
+        this.addChild(enemies);
+        
+        
+		var car = this.car = new cc.Sprite.create(res.Car_temp_png);
         car.setAnchorPoint(cc.p(0.5,0.5));
 		car.setPosition(cc.p(size.width/2 - 3, 150));
-		this.addChild(car, 0);
-		
-		//car.runAction(new cc.MoveBy(2, cc.p(30,(0-size.height))));	
+		this.addChild(car);
         
+         var cleft = cc.MenuItemImage.create(
+                res.Left_png,
+                res.Rigth_png,
+                this.turnleft,
+                this
+            );
+        cleft.setPosition(86, 40);
         
+        var cright = cc.MenuItemImage.create(
+                res.Rigth_png,
+                res.Left_png,
+                this.turnright,
+                this
+            );
+        cright.setPosition(228, 40);
+        
+
+        var clr = cc.Menu.create(cleft, cright);
+        clr.setPosition(0,0);
+        this.addChild(clr);
+
         // if the ability exists
         if(cc.sys.capabilities.hasOwnProperty('keyboard'))
         {
@@ -23,54 +50,45 @@ var AnimationLayer = cc.Layer.extend({
             cc.eventManager.addListener({
             event: cc.EventListener.KEYBOARD,
             onKeyPressed:  function(keyCode, event){
-            
+
                 if(keyCode == 37)
                 {
-                   var sprite_action = cc.MoveBy.create(0.35, cc.p(-70, 0));
-                   car.runAction(sprite_action);
+                    event.getCurrentTarget().turnleft();
                 }
                 
                 if(keyCode == 39)
                 {
-                   var sprite_action = cc.MoveBy.create(0.35, cc.p(70, 0));
-                   car.runAction(sprite_action);
+                   event.getCurrentTarget().turnright();
                 }
         
-                cc.log("key was pressed:  " + keyCode.toString());
+//                cc.log("key was pressed:  " + keyCode.toString());
             },
             onKeyReleased: function(keyCode, event){
-                cc.log("key was released:  " + keyCode.toString());
             }
             
         }, this);
-       }
-        
-        
-        cc.eventManager.addListener({
-        event: cc.EventListener.MOUSE,
-        onMouseMove: function(event){
-        var str = "MousePosition X: " + event.getLocationX() + "  Y:" + event.getLocationY();
-            cc.log(str );
+       }  
+    },
+    turnleft:function(sender)
+    {
+        if (this.goleft)
+        {
+            var sprite_action = cc.MoveBy.create(0.35, cc.p(-ONE_MOVE, 0));
+            this.car.runAction(sprite_action);
             
-            // do something...
-        },
-        onMouseUp: function(event){
-            var str = "Mouse Up detected, Key: " + event.getButton();
-              cc.log(str );
-            // do something...
-        },
-        onMouseDown: function(event){
-            var str = "Mouse Down detected, Key: " + event.getButton();
-            // do something...
-        },
-        onMouseScroll: function(event){
-            var str = "Mouse Scroll detected, X: " + event.getLocationX() + 
-                      "  Y:" +            event.getLocationY();
-              cc.log(str );
-            // do something...
+            this.goright++;
+            this.goleft--;
         }
-    },this);
-        
-        
+    },
+    turnright:function(sender)
+    {
+        if(this.goright)
+        {
+            var sprite_action = cc.MoveBy.create(0.35, cc.p(ONE_MOVE, 0));
+            this.car.runAction(sprite_action);
+            
+            this.goleft++;
+            this.goright--;
+        }
     }
 });
